@@ -5,23 +5,38 @@
 #!/bin/bash
 
 eval DIARY_CONFIG="~/.tinydiary"
-diary_file=""
+diary_file=
+text=
 
-for arg in "$@"
+while :;
 do
-    if [ "$arg" -eq ""
+    if [ -z "$1" ]; then break; fi
+
+    if [[ "$1" = "-u" ]]
+    then
+        echo "undo"
+        exit 0
+    fi
+
+    if [ -z "$text" ]
+    then
+        text=$1
+    else
+        eval filename="$1"
+        diary_file="$filename"
+    fi
+
+    shift
 done
 
-if [ -z "$1" ]
+if [ -z "$text" ]
 then
     echo "no text provided"
-    exit 3
+    exit 1
 fi
 
-if [ -z "$2" ]
+if [ -z $diary_file ]
 then
-    echo "no output file specified"
-
     if [ -e "$DIARY_CONFIG" ]
     then
         while IFS= read -r line
@@ -31,15 +46,14 @@ then
 
         if [ -z $diary_file ]
         then
-            echo "please specify a default diary file"
+            echo "please specify a default diary file in .tinydiary"
             exit 1
         fi
     else
         echo "no ~/.tinydiary"
         exit 2
     fi
-else
-    eval diary_file="$2"
 fi
 
-printf "$(date)\n$1\n\n" | tee -a "$diary_file"
+printf "$(date)\n$text\n\n" | tee -a "$diary_file"
+printf ">> $diary_file\n"
