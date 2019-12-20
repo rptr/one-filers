@@ -7,6 +7,12 @@
 eval DIARY_CONFIG="~/.tinydiary"
 diary_file=""
 
+if [ -z "$1" ]
+then
+    echo "no text provided"
+    exit 3
+fi
+
 if [ -z "$2" ]
 then
     echo "no output file specified"
