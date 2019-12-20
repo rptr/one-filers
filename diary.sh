@@ -1,4 +1,4 @@
-# usage: diary [DIARY FILE] [-u] DIARY ENTRY
+# usage: diary DIARY ENTRY [DIARY FILE] [-u] 
 # place a .tinydiary in your home directory with your desired default
 # diary file
 #
