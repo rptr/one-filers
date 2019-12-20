@@ -29,12 +29,6 @@ do
     shift
 done
 
-if [ -z "$text" ]
-then
-    echo "no text provided"
-    exit 1
-fi
-
 if [ -z $diary_file ]
 then
     if [ -e "$DIARY_CONFIG" ]
@@ -53,6 +47,16 @@ then
         echo "no ~/.tinydiary"
         exit 2
     fi
+fi
+
+if [ -z "$text" ]
+then
+    if [ -e "$diary_file" ]
+    then
+        cat $diary_file | less
+    fi
+
+    exit 0
 fi
 
 printf "$(date)\n$text\n\n" | tee -a "$diary_file"
