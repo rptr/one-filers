@@ -1,4 +1,4 @@
-# usage: diary "dear diary..." [diary file]
+# usage: diary [DIARY FILE] [-u] DIARY ENTRY
 # place a .tinydiary in your home directory with your desired default
 # diary file
 #
@@ -6,6 +6,11 @@
 
 eval DIARY_CONFIG="~/.tinydiary"
 diary_file=""
+
+for arg in "$@"
+do
+    if [ "$arg" -eq ""
+done
 
 if [ -z "$1" ]
 then
