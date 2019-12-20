@@ -1,3 +1,7 @@
+# usage: diary "dear diary..." [diary file]
+# place a .tinydiary in your home directory with your desired default
+# diary file
+#
 #!/bin/bash
 
 eval DIARY_CONFIG="~/.tinydiary"
@@ -16,7 +20,7 @@ then
 
         if [ -z $diary_file ]
         then
-            echo "please specify a default diary file on line 1 of .tinydiary"
+            echo "please specify a default diary file"
             exit 1
         fi
     else
@@ -27,6 +31,4 @@ else
     eval diary_file="$2"
 fi
 
-echo "writing to $diary_file"
-
-printf "$(date)\n$1\n\n" >> "$diary_file"
+printf "$(date)\n$1\n\n" | tee -a "$diary_file"
