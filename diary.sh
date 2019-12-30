@@ -8,6 +8,12 @@ eval DIARY_CONFIG="~/.tinydiary"
 diary_file=
 text=
 
+if [[ "$1" = "help" ]]
+then
+    echo "usage: diary "ENTRY" [FILE] [-u] [help]"
+    exit 0
+fi
+
 while :;
 do
     if [ -z "$1" ]; then break; fi
