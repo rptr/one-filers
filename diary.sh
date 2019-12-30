@@ -7,6 +7,7 @@
 eval DIARY_CONFIG="~/.tinydiary"
 diary_file=
 text=
+append=0
 
 if [[ "$1" = "help" ]]
 then
@@ -24,9 +25,14 @@ do
         exit 0
     fi
 
-    if [ -z "$text" ]
+    if [[ "$1" = "-a" ]]
+    then
+        append=1
+
+    elif [ -z "$text" ]
     then
         text=$1
+
     else
         eval filename="$1"
         diary_file="$filename"
@@ -65,5 +71,12 @@ then
     exit 0
 fi
 
-printf "$(date)\n$text\n\n" | tee -a "$diary_file"
+
+if [ $append -eq 0 ]; then
+    output="$(date)\n$text\n\n"
+else
+    output="$text\n\n"
+fi
+
+printf "$output" | tee -a "$diary_file"
 printf ">> $diary_file\n"
