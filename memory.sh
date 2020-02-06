@@ -7,16 +7,20 @@ print_info () {
     echo "       memory deck list"
     echo "       memory card add front back"
     echo "       memory card del id"
-    echo "       memory card list"
+    echo "       memory card list [deck]"
 }
 
-FLASHCARD_HOME="$HOME/.memory"
-DECKS="$FLASHCARD_HOME/decks"
-DEFAULT="$DECKS/default"
+deck_select () {
+    echo "select deck $1"
+}
 
-mkdir $DEFAULT -p
+MEM_HOME="$HOME/.memory"
+DEFAULT="$MEM_HOME/default"
 
-if [ -z $2 ]; then print_info; exit; fi
+mkdir $MEM_HOME -p
+touch $DEFAULT
+
+if ([ -z $3 ] && [ "$2" != "list" ]); then print_info; exit; fi
 
 if [[ $1 = "card" ]]
 then
@@ -42,16 +46,18 @@ if [[ $1 = "deck" ]]
 then
     if [[ $2 = "add" ]]
     then
-        echo "add card"
+        touch "$MEM_HOME/$3"
     fi
 
     if [[ $2 = "del" ]]
     then
-        echo "add card"
+        rm "$MEM_HOME/$3"
     fi
 
     if [[ $2 = "list" ]]
     then
-        echo "add card"
+        for deck in "$MEM_HOME/*"; do
+            echo $deck
+        done
     fi
 fi
