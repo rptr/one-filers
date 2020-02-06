@@ -68,6 +68,13 @@ then
 
     if [[ $2 = "sel" ]]
     then
-        rm "$MEM_HOME/$3"
+        exists=$(find $MEM_HOME -name "$3" )
+
+        if [ ! -n "$exists" ]; then
+            echo "no such deck"
+            exit
+        fi
+
+        echo "$3" > $CURRENT_FILE
     fi
 fi
