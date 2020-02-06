@@ -38,6 +38,7 @@ then
     if [[ $2 = "add" ]]
     then
         sed -i.tmp "1s/^/$3\n/" $CURRENT_FILE
+        echo "added $3 to $CURRENT"
     fi
 
     if [[ $2 = "del" ]]
@@ -46,6 +47,7 @@ then
             N
             s/$3\n//
         }" $CURRENT_FILE
+        echo "deleted $3 from $CURRENT"
     fi
 
     if [[ $2 = "list" ]]
@@ -58,12 +60,15 @@ if [[ $1 = "deck" ]]
 then
     if [[ $2 = "add" ]]
     then
-        touch "$MEM_HOME/$3"
+        # make sure it has 1 line in it
+        echo "" >  "$MEM_HOME/$3"
+        echo "created $3"
     fi
 
     if [[ $2 = "del" ]]
     then
         rm "$MEM_HOME/$3"
+        echo "deleted $3"
     fi
 
     if [[ $2 = "list" ]]
@@ -83,5 +88,6 @@ then
         fi
 
         echo "$3" > $CURRENT_STORE
+        echo "current deck is $3"
     fi
 fi
