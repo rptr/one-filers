@@ -16,9 +16,15 @@ deck_select () {
 
 MEM_HOME="$HOME/.memory"
 DEFAULT="$MEM_HOME/default"
+CURRENT=
 
 mkdir $MEM_HOME -p
 touch $DEFAULT
+
+if [ -z "$MEM_HOME/.current_deck" ]
+then
+    cat "default" > $MEM_HOME/.current_deck
+fi
 
 if ([ -z $3 ] && [ "$2" != "list" ]); then print_info; exit; fi
 
@@ -31,14 +37,12 @@ then
 
     if [[ $2 = "del" ]]
     then
-    
-        echo "add card"
+        echo ""
     fi
 
     if [[ $2 = "list" ]]
     then
-    
-        echo "add card"
+        echo ""
     fi
 fi
 
@@ -59,5 +63,10 @@ then
         for deck in "$MEM_HOME/*"; do
             echo $deck
         done
+    fi
+
+    if [[ $2 = "sel" ]]
+    then
+        rm "$MEM_HOME/$3"
     fi
 fi
