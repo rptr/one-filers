@@ -1,8 +1,8 @@
+#!/bin/bash
 # usage: diary "DIARY ENTRY" [DIARY FILE] [-u] 
 # place a .tinydiary in your home directory with your desired default
 # diary file
 #
-#!/bin/bash
 
 eval DIARY_CONFIG="~/.tinydiary"
 diary_file=

@@ -1,6 +1,6 @@
+#!/bin/bash
 # usage: whourse project XhYm
 #
-#!/bin/bash
 
 eval DIARY_CONFIG="~/.workhourse"
 diary_file=

@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# flash cards i believe
+#
 
 print_info () {
     echo "usage: memory deck add name"
