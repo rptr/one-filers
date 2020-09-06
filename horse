@@ -1,5 +1,5 @@
 #!/bin/python3
-import sys, os
+import sys, os, math
 
 ###
 ### CONFIGURATION - change these ###
@@ -23,14 +23,16 @@ class Project():
         return '%s %dH %dM' % (self.name, self.hours, self.minutes)
 
     def add(self, hours, minutes):
-        self.hours      += hours
         self.minutes    += minutes
+        hours           += math.floor(self.minutes / 60.0)
+        self.minutes    = self.minutes % 60
+
+        self.hours      += hours
 
     def save_str(self):
         return '%s:%dH:%dM\n' % (self.name, self.hours, self.minutes)
 
 def load_project(parts):
-    print(parts)
     new = Project(parts[0], int(parts[1][:-1]), int(parts[2][:-2]))
     projects.append(new)
 
@@ -56,28 +58,19 @@ def get_project_from_arg(arg):
     if arg.isnumeric():
         index = int(arg) - 1
         return projects[index]
-    elif arg.isalpha():
+    else:
         for project in projects:
-            if project.name == arg:
+            if project.name.startswith(arg):
                 return project
 
-    raise Exception('not such project')
+    raise Exception('no such project: "%s"' % (arg))
 
 def show_project(arg):
     project = get_project_from_arg(arg)
     print(project)
 
-def add_hours(argv):
-    project = get_project_from_arg(argv[0])
-    hours   = 0
-    minutes = 0
-
-    for arg in argv:
-        if 'h' in arg or 'H' in arg:
-            hours = int(arg[:-1])
-        elif 'm' in arg or 'H' in arg:
-            minutes = int(arg[:-1])
-
+def add_hours(name, hours, minutes):
+    project = get_project_from_arg(name)
     project.add(hours, minutes)
 
 def save():
@@ -88,22 +81,41 @@ def save():
 
     for project in projects:
         f.write(project.save_str())
-        print(project)
 
     f.close()
+
+def get_args(argv):
+    project_name = ''
+    hours = 0
+    minutes = 0
+
+    for arg in argv[1:]:
+        number = arg.rstrip()[:-1]
+
+        if 'H' in arg and number.isnumeric():
+            hours   = int(number)
+        elif 'M' in arg and number.isnumeric():
+            minutes = int(number)
+        else:
+            project_name += arg + ' '
+
+    return (project_name.rstrip(), hours, minutes)
 
 if __name__ == '__main__':
     load_projects()
 
+    args = get_args(sys.argv)
+
     # show all projects
-    if len(sys.argv) == 1:
+    if len(args[0]) == 0:
         show_projects()
 
     # show specific project
-    elif len(sys.argv) == 2:
-        show_project(sys.argv[1])
+    elif args[1] == 0 and args[2] == 0:
+        show_project(args[0])
 
     else:
-        add_hours(sys.argv[1:])
+        add_hours(args[0], args[1], args[2])
+        show_project(args[0])
 
     save()
