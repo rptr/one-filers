@@ -15,6 +15,10 @@ class Project():
     def __str__(self):
         return '%s %dH %dM' % (self.name, self.hours, self.minutes)
 
+    def add(self, hours, minutes):
+        self.hours      += hours
+        self.minutes    += minutes
+
 def load_project(parts):
     new = Project(parts[0], int(parts[1]), int(parts[2]))
     projects.append(new)
@@ -37,15 +41,33 @@ def show_projects():
     for i in range(len(projects)):
         print('%d. %s' % (i+1, projects[i]))
 
-def show_project(arg):
+def get_project_from_arg(arg):
     if arg.isnumeric():
         index = int(arg) - 1
-        print(projects[index])
+        return projects[index]
     elif arg.isalpha():
-        print(arg)
+        for project in projects:
+            if project.name == arg:
+                return project
+
+    raise Exception('not such project')
+
+def show_project(arg):
+    project = get_project_from_arg(arg)
+    print(project)
 
 def add_hours(argv):
-    pass
+    project = get_project_from_arg(argv[0])
+    hours   = 0
+    minutes = 0
+
+    for arg in argv:
+        if 'h' in arg or 'H' in arg:
+            hours = int(arg[:-1])
+        elif 'm' in arg or 'H' in arg:
+            minutes = int(arg[:-1])
+
+    project.add(hours, minutes)
 
 if __name__ == '__main__':
     load_projects()
@@ -59,4 +81,4 @@ if __name__ == '__main__':
         show_project(sys.argv[1])
 
     else:
-        add_hours(sys.argv)
+        add_hours(sys.argv[1:])
