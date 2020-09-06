@@ -1,6 +1,8 @@
 #!/bin/python3
 #
-USAGE = """USAGE:
+USAGE = """Workhorse
+
+USAGE:
     horse                             Print information about all projects
     horse <PROJECT NAME>              Print information about a project
     horse <PROJECT NAME> [Xh] [Ym]    Add X hours and/or Y minutes to project
