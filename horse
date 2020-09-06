@@ -1,8 +1,15 @@
 #!/bin/python3
-import sys
+import sys, os
 
-# config
+###
+### CONFIGURATION - change these ###
+###
+
 CONFIG_LOCATION = '/home/rpj/.workhorse'
+
+###
+###
+###
 
 projects = []
 
@@ -19,8 +26,12 @@ class Project():
         self.hours      += hours
         self.minutes    += minutes
 
+    def save_str(self):
+        return '%s:%dH:%dM\n' % (self.name, self.hours, self.minutes)
+
 def load_project(parts):
-    new = Project(parts[0], int(parts[1]), int(parts[2]))
+    print(parts)
+    new = Project(parts[0], int(parts[1][:-1]), int(parts[2][:-2]))
     projects.append(new)
 
 def load_projects():
@@ -69,6 +80,18 @@ def add_hours(argv):
 
     project.add(hours, minutes)
 
+def save():
+    os.system('cp %s %s' % (CONFIG_LOCATION, CONFIG_LOCATION+'.bak'))
+    f = open(CONFIG_LOCATION, 'w')
+
+    f.write('%% data\n')
+
+    for project in projects:
+        f.write(project.save_str())
+        print(project)
+
+    f.close()
+
 if __name__ == '__main__':
     load_projects()
 
@@ -82,3 +105,5 @@ if __name__ == '__main__':
 
     else:
         add_hours(sys.argv[1:])
+
+    save()
