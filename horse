@@ -92,9 +92,11 @@ def get_args(argv):
     for arg in argv[1:]:
         number = arg.rstrip()[:-1]
 
-        if 'H' in arg and number.isnumeric():
+        if ('H' in arg or 'h' in arg) and (number.isnumeric() or 
+                (number[0] == '-' and number[1:].isnumeric())):
             hours   = int(number)
-        elif 'M' in arg and number.isnumeric():
+        elif ('M' in arg or 'm' in arg) and (number.isnumeric() or
+                (number[0] == '-' and number[1:].isnumeric())):
             minutes = int(number)
         else:
             project_name += arg + ' '
