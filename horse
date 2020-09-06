@@ -1,0 +1,58 @@
+#!/bin/python3
+import sys
+
+# config
+CONFIG_LOCATION = '/home/rpj/.workhorse'
+
+projects = []
+
+class Project():
+    def __init__(self, name, h, m):
+        self.name    = name
+        self.hours   = h
+        self.minutes = m
+
+    def __str__(self):
+        return '%s %dH %dM' % (self.name, self.hours, self.minutes)
+
+def load_project(parts):
+    new = Project(parts[0], int(parts[1]), int(parts[2]))
+    projects.append(new)
+
+def load_projects():
+    f           = open(CONFIG_LOCATION, 'r')
+    found_data  = False
+
+    for line in f:
+        parts = line.split(':')
+
+        if found_data:
+            load_project(parts)
+        elif '%% data' in parts[0]:
+            found_data = True
+
+    f.close()
+
+def show_projects():
+    for project in projects:
+        print(project)
+
+def show_project(name):
+    pass
+
+def add_hours(argv):
+    pass
+
+if __name__ == '__main__':
+    load_projects()
+
+    # show all projects
+    if len(sys.argv) == 1:
+        show_projects()
+
+    # show specific project
+    elif len(sys.argv) == 2:
+        show_project(sys.argv[1])
+
+    else:
+        add_hours(sys.argv)
