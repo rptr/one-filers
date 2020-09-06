@@ -34,11 +34,15 @@ def load_projects():
     f.close()
 
 def show_projects():
-    for project in projects:
-        print(project)
+    for i in range(len(projects)):
+        print('%d. %s' % (i+1, projects[i]))
 
-def show_project(name):
-    pass
+def show_project(arg):
+    if arg.isnumeric():
+        index = int(arg) - 1
+        print(projects[index])
+    elif arg.isalpha():
+        print(arg)
 
 def add_hours(argv):
     pass
