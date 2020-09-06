@@ -1,15 +1,16 @@
 #!/bin/python3
-import sys, os, math
+#
+USAGE = """USAGE:
+    horse                             Print information about all projects
+    horse <PROJECT NAME>              Print information about a project
+    horse <PROJECT NAME> [Xh] [Ym]    Add X hours and/or Y minutes to project
+    horse -h                          Print this help information"""
 
-###
 ### CONFIGURATION - change these ###
-###
-
 CONFIG_LOCATION = '/home/rpj/.workhorse'
 
-###
-###
-###
+##############################################################################
+import sys, os, math
 
 projects = []
 
@@ -114,7 +115,11 @@ def get_args(argv):
 
     return (project_name.rstrip(), hours, minutes)
 
-if __name__ == '__main__':
+def main():
+    if len(sys.argv) > 1 and sys.argv[1] == '-h':
+        print(USAGE)
+        return
+
     load_projects()
 
     args = get_args(sys.argv)
@@ -132,3 +137,6 @@ if __name__ == '__main__':
         show_project(args[0])
 
     save()
+
+if __name__ == '__main__':
+    main()
