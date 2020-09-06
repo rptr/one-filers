@@ -63,15 +63,26 @@ def get_project_from_arg(arg):
             if project.name.startswith(arg):
                 return project
 
-    raise Exception('no such project: "%s"' % (arg))
+    return None
+    # raise Exception('no such project: "%s"' % (arg))
 
 def show_project(arg):
     project = get_project_from_arg(arg)
+
+    if project == None:
+        print('no such project')
+        return
+
     print(project)
 
 def add_hours(name, hours, minutes):
     project = get_project_from_arg(name)
-    project.add(hours, minutes)
+
+    # new project
+    if project == None:
+        projects.append(Project(name, hours, minutes))
+    else:
+        project.add(hours, minutes)
 
 def save():
     os.system('cp %s %s' % (CONFIG_LOCATION, CONFIG_LOCATION+'.bak'))
