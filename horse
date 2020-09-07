@@ -21,8 +21,23 @@ class Tag():
     def __init__(self, name):
         self.name = name
 
+    def __str__(self):
+        # tag_projs = []
+        income = 0
+        hours = 0
+        minutes = 0
+
+        for project in projects:
+            if self.name in project.tags:
+                hours += project.hours
+                minutes += project.minutes
+                income += project.income
+
+        return ('%s\n\tTotal time: %dH%dM\n\tTotal income: %d\n' %
+                (self.name, hours, minutes, income))
+
     def save_str(self):
-        return '%s' % (self.name)
+        return '%s\n' % (self.name)
 
 def load_tag(tag_name):
     tags.append(Tag(tag_name))
@@ -39,7 +54,7 @@ class Project():
             self.tags = []
 
     def __str__(self):
-        return '%s %dH %dM' % (self.name, self.hours, self.minutes)
+        return '%s %dH %dM $%d' % (self.name, self.hours, self.minutes, self.income)
 
     def add(self, hours, minutes):
         self.minutes    += minutes
@@ -73,7 +88,7 @@ def load_file():
                 found_data = True
                 found_tags = False
             else:
-                load_tag(parts[0])
+                load_tag(parts[0].rstrip())
         elif '%% tags' in parts[0]:
             found_tags = True
 
@@ -82,6 +97,13 @@ def load_file():
 def show_projects():
     for i in range(len(projects)):
         print('%d. %s' % (i+1, projects[i]))
+
+def get_tag_from_arg(arg):
+    for tag in tags:
+        if tag.name.startswith(arg):
+            return tag
+
+    return None
 
 def get_project_from_arg(arg):
     if arg.isnumeric():
@@ -99,7 +121,13 @@ def show_project(arg):
     project = get_project_from_arg(arg)
 
     if project == None:
-        print('no such project')
+        tag = get_tag_from_arg(arg)
+
+        if tag == None:
+            print('no such project or tag')
+            return
+
+        print(tag)
         return
 
     print(project)
@@ -161,7 +189,7 @@ def main():
     if len(args[0]) == 0:
         show_projects()
 
-    # show specific project
+    # show specific project or tag
     elif args[1] == 0 and args[2] == 0:
         show_project(args[0])
 
