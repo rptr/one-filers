@@ -137,7 +137,7 @@ def add_hours(name, hours, minutes):
 
     # new project
     if project == None:
-        projects.append(Project(name, hours, minutes))
+        projects.append(Project(name, hours, minutes, '', 0))
     else:
         project.add(hours, minutes)
 
