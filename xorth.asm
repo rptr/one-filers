@@ -20,10 +20,14 @@ s_error:	db	"error: "
 l_error:	equ	7
 ok:	db	"ok"
 	dd	10
-err_token:	db	"invalid token"
-	section	.bss
 inlen:	equ	100
+next_dict:	equ	0		;; where to put the next word
+barf:	db	"barf"
+err_token:	db	"invalid token"
+
+	section	.bss
 input:	resb	inlen
+dict:	resb	3200
 
 	section	.text
 %macro	read_	2
@@ -52,6 +56,12 @@ input:	resb	inlen
 %endmacro
 
 _start:
+	mov	rsi, "hello\0"
+	mov	rdi, dict
+	cld
+	mov	rcx, 6
+	mov	rdi, 999		; next addr TODO
+
 	jmp	repl
 exit:
 	mov	rax, 60
@@ -79,6 +89,13 @@ run:
 	jmp	run
 
 token:
+t_dot:
+	cmp	byte input[r10], '.'
+	jne	t_num
+	inc	r10
+	cmp	r10, rcx
+	dec	r10
+	je	print
 t_num:
 	xor	rax, rax
 	mov	r8, rcx
@@ -114,4 +131,7 @@ tokendone:
 	jmp	run
 badtoken:
 	error_	err_token
+print:
+	write_	barf, 4
+	jmp	tokendone
 
