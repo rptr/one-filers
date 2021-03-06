@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+# IRC bot
 use strict;
 use warnings;
 use AnyEvent;

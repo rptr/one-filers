@@ -22,8 +22,14 @@ data SchemeError = NumArgs Integer [AST]
                  | Default String
 
 instance Show AST where show = showVal
+instance Show SchemeError where show = showError
+
+type ThrowsError = Either SchemeError
 
 todo = undefined
+
+showError :: SchemeError -> String
+showError _ = "Undefined error"
 
 symbol :: Parser Char
 symbol = oneOf "!#$%&|*+-/:<=>?@^_~"
