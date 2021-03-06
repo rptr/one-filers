@@ -1,13 +1,14 @@
-;; nasm -felf64 zorth.asm && ld zorth.o -o zorth && ./zorth
+;; nasm -felf64 xorth.asm && ld xorth.o -o xorth && ./xorth
 ;;
 ;; constants: integers
 ;; words: [a-z][A-Z]
 ;;
-;; words are stored in the bottom of the stack thus:
+;; words are stored thus:
 ;;
 ;; | WORD_NAME\0 | NEXT WORD ADDR | CODE | NEXT_WORD\0 | ...
 ;;   32 bytes      8 bytes
 ;;
+;; NOTE: not working
 
 
 	global	_start
